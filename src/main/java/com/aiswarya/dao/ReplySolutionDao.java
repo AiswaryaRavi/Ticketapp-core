@@ -18,38 +18,36 @@ public class ReplySolutionDao {
 	IssuesSolutions issue = new IssuesSolutions();
 	EmployeesDao employeesdao = new EmployeesDao();
 
-	public void replySolution(String emailid,int ticketId, String solution)
-			throws PersistanceException {
-		try{
-		EmployeeLoginDao login = new EmployeeLoginDao();
+	public void replySolution(String emailid, int ticketId, String solution) throws PersistanceException {
+		try {
 			ttdao.getTicketId(ticketId);
 			int id = employeesdao.geteid(emailid);
 			Integer tid = ttdao.getTId(ticketId, id).getId();
+			String status = ttdao.getTicketStatus(ticketId);
+
 			if (tid != null) {
-				String sql = "update TICKET_TRANSACTIONS set RESOLVED_DATE=NOW(),STATUS='RESOLVED' WHERE ID=?";
-				Object[] params = { ticketId };
-				jdbcTemplate.update(sql, params);
-				tt.setId(tid);
-				issue.setTicketId(tt);
-				issue.setSolution("shgvfsfvhgf");
-				i.save(issue);
-				int uid=ttdao.getUId(ticketId);
-				String email=ttdao.getemail(uid);
-				try {
-					MailUtil.sendSimpleMail(email,"Ticket is resolved:",tid);
-				} catch (Exception e) {
+				if (status != "closed") {
 
-	}
+					String sql = "update TICKET_TRANSACTIONS set RESOLVED_DATE=NOW(),STATUS='RESOLVED' WHERE ID=?";
+					Object[] params = { ticketId };
+					jdbcTemplate.update(sql, params);
+					tt.setId(tid);
+					issue.setTicketId(tt);
+					issue.setSolution(solution);
+					i.save(issue);
+					int uid = ttdao.getUId(ticketId);
+					String email = ttdao.getemail(uid);
+					try {
+						MailUtil.sendSimpleMail1(email, "Ticket is resolved: for", ticketId,"solution is:"+solution);
+					} catch (Exception e) {
 
-			
+					}
+				}
+			}
+
+		} catch (EmptyResultDataAccessException e) {
+			throw new PersistanceException("TicketId not exists", e);
 
 		}
-
-
-	
-	} catch (EmptyResultDataAccessException e) {
-		throw new PersistanceException("TicketId not exists", e);
-
-}
 	}
 }

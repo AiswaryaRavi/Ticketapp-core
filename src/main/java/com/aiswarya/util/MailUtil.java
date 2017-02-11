@@ -26,5 +26,24 @@ public class MailUtil {
 		
 			
 	}
+	public static void sendSimpleMail1(String mail,String message,int ticketId,String solution) throws EmailException{
+		Email email = new SimpleEmail();
+
+		email.setSmtpPort(587);
+		
+		email.setAuthenticator(new DefaultAuthenticator("ticketmanagement.tms@gmail.com", "ticket123"));
+		email.setDebug(true);
+		email.setHostName("smtp.gmail.com");
+		email.setSSLOnConnect(true);
+		email.setFrom("ticketmanagement.tms@gmail.com");
+		email.setSubject("Ticket Management System");
+		email.setMsg(message+""+ticketId+message+solution);
+		email.addTo(mail);
+		email.setStartTLSEnabled(true);
+		email.send();
+		
+			
+	}
+
 
 }

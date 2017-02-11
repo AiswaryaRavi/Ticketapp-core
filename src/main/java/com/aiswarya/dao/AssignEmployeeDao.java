@@ -26,7 +26,7 @@ public class AssignEmployeeDao {
 		try {
 
 				ttdao.getTicketId(ticketId);
-				String sql = "update TICKET_TRANSACTIONS set ASSIGNED_EMPLOYEE_ID=?,STATUS='ON PROGRESS' WHERE ID=? AND STATUS='OPEN'";
+				String sql = "UPDATE TICKET_TRANSACTIONS SET ASSIGNED_EMPLOYEE_ID=?,STATUS='ON PROGRESS' WHERE ID=? AND STATUS<>'CLOSE'";
 				Object[] params = { empId, ticketId };
 				jdbcTemplate.update(sql, params);
 				String sql1 = "update EMPLOYEES set STATUS='ASSIGNED' where ID=?";

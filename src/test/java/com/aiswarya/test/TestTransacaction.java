@@ -19,7 +19,7 @@ public class TestTransacaction {
 		TicketTransactionDao ttdao = new TicketTransactionDao();
 		User user = new User();
 		UserDao s1=new UserDao();
-		System.out.println(ttdao.getUId(2));
+		System.out.println(ttdao.getTicketStatus(5));
 		// Employee e = new Employee();
 		// Departments d = new Departments();
 		//tt.setId(1);

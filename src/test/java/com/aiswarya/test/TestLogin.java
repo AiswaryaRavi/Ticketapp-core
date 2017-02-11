@@ -9,7 +9,7 @@ import com.aiswarya.dao.LoginDao;
 import com.aiswarya.dao.ReplySolutionDao;
 import com.aiswarya.dao.TicketDao;
 import com.aiswarya.dao.TicketTransactionDao;
-import com.aiswarya.dao.UpdateSolutionDao;
+//import com.aiswarya.dao.UpdateSolutionDao;
 import com.aiswarya.exception.PersistanceException;
 import com.aiswarya.model.TicketTransaction;
 import com.aiswarya.model.User;

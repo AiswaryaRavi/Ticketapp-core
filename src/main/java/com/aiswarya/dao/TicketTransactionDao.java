@@ -27,12 +27,11 @@ public class TicketTransactionDao implements Dao<TicketTransaction> {
 
 	@Override
 	public void update(TicketTransaction t) throws PersistanceException {
-		try{
-		String sql = "update TICKET_TRANSACTIONS set DESCRIPTION=?,STATUS=? WHERE ID=?";
-		Object[] params = { t.getDescription(), t.getStatus(), t.getId() };
-		jdbcTemplate.update(sql, params);
-		}
-		catch (EmptyResultDataAccessException e) {
+		try {
+			String sql = "update TICKET_TRANSACTIONS set DESCRIPTION=?,STATUS=? WHERE ID=?";
+			Object[] params = { t.getDescription(), t.getStatus(), t.getId() };
+			jdbcTemplate.update(sql, params);
+		} catch (EmptyResultDataAccessException e) {
 			throw new PersistanceException("TicketId not exists", e);
 		}
 
@@ -145,6 +144,16 @@ public class TicketTransactionDao implements Dao<TicketTransaction> {
 			return jdbcTemplate.queryForObject(sql, params, Integer.class);
 		} catch (EmptyResultDataAccessException e) {
 			throw new PersistanceException("Invalid credentials", e);
+		}
+	}
+
+	public String getTicketStatus(int ticketId) throws PersistanceException {
+		try {
+			String sql = "SELECT STATUS FROM TICKET_TRANSACTIONS WHERE ID=?";
+			Object[] params = {ticketId};
+			return jdbcTemplate.queryForObject(sql, params, String.class);
+		} catch (EmptyResultDataAccessException e) {
+			throw new PersistanceException("Ticket id does not exists", e);
 		}
 	}
 
