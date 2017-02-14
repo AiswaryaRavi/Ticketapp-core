@@ -1,16 +1,24 @@
 package com.aiswarya.service;
 
+import java.util.List;
+
 import org.springframework.dao.DataAccessException;
 
 import com.aiswarya.dao.TicketDao;
+import com.aiswarya.dao.TicketTransactionDao;
+import com.aiswarya.dao.UserDao;
 import com.aiswarya.exception.PersistanceException;
 import com.aiswarya.exception.ServiceException;
 import com.aiswarya.exception.ValidationException;
+import com.aiswarya.model.TicketTransaction;
+import com.aiswarya.model.User;
 import com.aiswarya.validator.UserValidator;
 
 public class TicketService {
 	private UserService u = new UserService();
 	TicketDao t = new TicketDao();
+	UserDao user = new UserDao();
+	TicketTransactionDao ttdao = new TicketTransactionDao();
 
 	public void ticketCreation(String emailid, String subject, String description, String department, String priority)
 			throws ServiceException {
@@ -52,38 +60,40 @@ public class TicketService {
 	}
 
 	public void closeTicket(String emailid, Integer id) throws ServiceException {
-			try {
-				UserValidator.ticketUpdateStatus(id);
-				System.out.println("hi");
-				t.updateStatus(emailid,id);
-			} catch (ValidationException e) {
-				throw new ServiceException("Updation failed", e);
+		try {
+			UserValidator.ticketUpdateStatus(id);
+			System.out.println("hi");
+			t.updateStatus(emailid, id);
+		} catch (ValidationException e) {
+			throw new ServiceException("Updation failed", e);
 
-			}
+		}
 
-			catch (PersistanceException e) {
-				throw new ServiceException("Updation failed", e);
+		catch (PersistanceException e) {
+			throw new ServiceException("Updation failed", e);
 
-			} catch (DataAccessException e) {
-				throw new ServiceException("Updation failed", e);
+		} catch (DataAccessException e) {
+			throw new ServiceException("Updation failed", e);
 
-			}
-		
+		}
+
 	}
 
-	public void displayTicket(String emailid, String password) throws ServiceException {
-		if (u.login(emailid, password)) {
-			try {
+	public List<TicketTransaction> DisplayUserTickets(String emailid) throws ServiceException {
+		try{
+		int uid = user.getUId(emailid);
+		System.out.println("hi");
+		return ttdao.listById(uid);
+		}
 
-				t.displayTicket(emailid, password);
-			} catch (PersistanceException e) {
-				throw new ServiceException("", e);
+		catch (PersistanceException e) {
+			throw new ServiceException("unable to show", e);
 
-			} catch (DataAccessException e) {
-				throw new ServiceException("", e);
+		} catch (DataAccessException e) {
+			throw new ServiceException("Unable to show", e);
 
-			}
 		}
 	}
+	
 
 }

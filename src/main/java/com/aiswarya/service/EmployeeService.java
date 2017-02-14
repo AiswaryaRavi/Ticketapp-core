@@ -1,18 +1,26 @@
 package com.aiswarya.service;
 
+import java.util.List;
+
 import org.springframework.dao.DataAccessException;
 
 import com.aiswarya.dao.AssignEmployeeDao;
 import com.aiswarya.dao.EmployeeLoginDao;
+import com.aiswarya.dao.EmployeesDao;
 import com.aiswarya.dao.ReplySolutionDao;
+import com.aiswarya.dao.TicketTransactionDao;
 import com.aiswarya.exception.PersistanceException;
 import com.aiswarya.exception.ServiceException;
 import com.aiswarya.exception.ValidationException;
+import com.aiswarya.model.Employee;
+import com.aiswarya.model.TicketTransaction;
 import com.aiswarya.validator.EmployeeValidator;
 
 public class EmployeeService {
 	AssignEmployeeDao ae = new AssignEmployeeDao();
 	EmployeeLoginDao emp = new EmployeeLoginDao();
+	EmployeesDao employee = new EmployeesDao();
+	TicketTransactionDao ttdao = new TicketTransactionDao();
 
 	ReplySolutionDao r = new ReplySolutionDao();
 
@@ -33,20 +41,6 @@ public class EmployeeService {
 
 		}
 
-	}
-
-	public void displayTicket(String emailId, String password) throws ServiceException {
-		try {
-			if (emp.login(emailId, password))
-
-				ae.viewTicket(emailId, password);
-		} catch (PersistanceException e) {
-			throw new ServiceException("", e);
-
-		} catch (DataAccessException e) {
-			throw new ServiceException("", e);
-
-		}
 	}
 
 	public void assignDefaultEmployee(int deptId) throws ServiceException {
@@ -88,5 +82,19 @@ public class EmployeeService {
 		}
 	}
 
-	
+	public List<TicketTransaction> DisplayEmployeeTickets(String emailid) throws ServiceException {
+		try {
+			int eid = employee.geteid(emailid);
+			return ttdao.listByEmpId(eid);
+		}
+
+		catch (PersistanceException e) {
+			throw new ServiceException("unable to show", e);
+
+		} catch (DataAccessException e) {
+			throw new ServiceException("Unable to show", e);
+
+		}
+	}
+
 }

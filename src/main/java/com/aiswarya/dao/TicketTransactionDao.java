@@ -80,10 +80,10 @@ public class TicketTransactionDao implements Dao<TicketTransaction> {
 	}
 
 	public List<TicketTransaction> listById(int userid) {
-		String sql = "select ID,USER_ID,SUBJECT,DESCRIPTION,STATUS from TICKET_TRANSACTIONS WHERE USER_ID=?";
+		String sql = "select ID,SUBJECT,DESCRIPTION,STATUS from TICKET_TRANSACTIONS WHERE USER_ID=?";
 		Object[] params = { userid };
 
-		return jdbcTemplate.query(sql, params, (rs, rowNum) -> convert1(rs));
+		return jdbcTemplate.query(sql, params, (rs, rowNum) -> convert2(rs));
 
 	}
 
@@ -91,7 +91,7 @@ public class TicketTransactionDao implements Dao<TicketTransaction> {
 		String sql = "SELECT ID,USER_ID,SUBJECT,DESCRIPTION,STATUS FROM TICKET_TRANSACTIONS WHERE ASSIGNED_EMPLOYEE_ID=?";
 		Object[] params = { empid };
 
-		return jdbcTemplate.query(sql, params, (rs, rowNum) -> convert3(rs));
+		return jdbcTemplate.query(sql, params, (rs, rowNum) -> convert2(rs));
 
 	}
 
@@ -107,6 +107,18 @@ public class TicketTransactionDao implements Dao<TicketTransaction> {
 		tt.setStatus(rs.getString("STATUS"));
 		return tt;
 	}
+	private TicketTransaction convert2(ResultSet rs) throws SQLException {
+		TicketTransaction tt = new TicketTransaction();
+		
+		tt.setId(rs.getInt("ID"));
+		
+		tt.setSubject(rs.getString("SUBJECT"));
+		tt.setDescription(rs.getString("DESCRIPTION"));
+
+		tt.setStatus(rs.getString("STATUS"));
+		return tt;
+	}
+	
 
 	private TicketTransaction convert1(ResultSet rs) throws SQLException {
 		return convert3(rs);

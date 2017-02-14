@@ -91,27 +91,8 @@ public class TicketDao {
 
 
 	}
+	
 
-	public void displayTicket(String emailid, String password) throws PersistanceException {
-
-		LoginDao login = new LoginDao();
-		if (login.login(emailid, password)) {
-			int id = ttdao.getId(emailid).getId();
-			user.setId(id);
-
-			tt.setUserId(user);
-			ttdao.listById(user.getId());
-			List<TicketTransaction> list = ttdao.listById(id);
-			Iterator<TicketTransaction> i = list.iterator();
-			while (i.hasNext()) {
-				TicketTransaction tt1 = (TicketTransaction) i.next();
-				logger.log(Level.INFO, tt1.getId() + "\t" + tt1.getUserId().getId() + "\t" + tt1.getSubject() + "\t"
-						+ tt1.getDescription() + "\t" + tt1.getStatus());
-
-			}
-
-		}
-
-	}
+	
 
 }

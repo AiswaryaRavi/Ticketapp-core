@@ -52,6 +52,7 @@ public class TestTransacaction {
 
 		
 //System.out.println(ttdao.getTId(1,6).getId());
+		ttdao.listById(1);
 	}
 
 }

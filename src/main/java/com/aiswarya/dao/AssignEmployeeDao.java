@@ -38,32 +38,7 @@ public class AssignEmployeeDao {
 		}
 	}
 
-	public void viewTicket(String emailid, String password) throws PersistanceException {
-		try {
-
-			EmployeeLoginDao login = new EmployeeLoginDao();
-			if (login.login(emailid, password)) {
-				int id = employeesDAO.getId(emailid, password);
-				e.setId(id);
-
-				tt.setEmployeeId(e);
-				ttdao.listById(e.getId());
-				List<TicketTransaction> list = ttdao.listByEmpId(id);
-				Iterator<TicketTransaction> i = list.iterator();
-				while (i.hasNext()) {
-					TicketTransaction tt1 = (TicketTransaction) i.next();
-					logger.log(Level.INFO, tt1.getId() + "\t" + tt1.getUserId().getId() + "\t" + tt1.getSubject() + "\t"
-							+ tt1.getDescription());
-
-				}
-			}
-
-		} catch (EmptyResultDataAccessException e) {
-			throw new PersistanceException("TicketId not exists", e);
-		}
-
-	}
-
+	
 	public void assignEmployee(int deptId) throws PersistanceException {
 		try {
 
